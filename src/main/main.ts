@@ -12,6 +12,9 @@ import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import installExtension, {
+  REACT_DEVELOPER_TOOLS,
+} from 'electron-devtools-assembler';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
@@ -43,22 +46,22 @@ if (isDebug) {
   require('electron-debug')();
 }
 
-const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS'];
+// const installExtensions = async () => {
+//   const installer = require('electron-devtools-installer');
+//   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+//   const extensions = ['REACT_DEVELOPER_TOOLS'];
 
-  return installer
-    .default(
-      extensions.map((name) => installer[name]),
-      forceDownload,
-    )
-    .catch(console.log);
-};
+//   return installer
+//     .default(
+//       extensions.map((name) => installer[name]),
+//       forceDownload,
+//     )
+//     .catch(console.log);
+// };
 
 const createWindow = async () => {
   if (isDebug) {
-    await installExtensions();
+    installExtension(REACT_DEVELOPER_TOOLS);
   }
 
   const RESOURCES_PATH = app.isPackaged
